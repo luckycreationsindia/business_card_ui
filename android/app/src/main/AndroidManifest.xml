@@ -1,6 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <application
-        android:label="business_card_ui"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.luckycreationsindia.businesscard">
+   <application
+        android:label="businesscard"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

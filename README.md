@@ -1,4 +1,4 @@
-Business Card
+# Business Card
 
 Digital Business Card - A modern way to share Contact information with clients or anyone you like
 

@@ -1,26 +1,27 @@
 import 'dart:typed_data';
 
-import 'package:business_card_ui/extensions.dart';
-import 'package:business_card_ui/src/models/Customer.dart';
-import 'package:business_card_ui/src/views/BottomNavButton.dart';
-import 'package:business_card_ui/src/views/ContactData.dart';
-import 'package:business_card_ui/src/views/ModuleCard.dart';
-import 'package:dio/dio.dart';
-import 'package:file_saver/file_saver.dart';
+import 'package:businesscard/src/models/Customer.dart';
+import 'package:businesscard/src/views/BottomNavButton.dart';
+import 'package:businesscard/src/views/ContactData.dart';
+import 'package:businesscard/src/views/ModuleCard.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_strategy/url_strategy.dart';
 import 'package:vcard_maintained/vcard_maintained.dart';
+import 'package:file_saver/file_saver.dart';
+import 'package:businesscard/extensions.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 late Customer customerData;
 
 void main() async {
   setPathUrlStrategy();
   var dio = Dio();
-  // var cookieJar = CookieJar();
-  // dio.interceptors.add(CookieManager(cookieJar));
+  var cookieJar = CookieJar();
+  dio.interceptors.add(CookieManager(cookieJar));
   dio.interceptors.add(
     InterceptorsWrapper(
       onResponse: (response, handler) {
@@ -29,10 +30,9 @@ void main() async {
           handler.next(Response(
               requestOptions: response.requestOptions, data: data['message']));
         } else {
-          handler.reject(DioException(
-            requestOptions: response.requestOptions,
-            error: "Error Loading Data",
-          ));
+          handler.reject(DioError(
+              requestOptions: response.requestOptions,
+              error: "Error Loading Data"));
         }
       },
     ),
@@ -174,13 +174,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         }
 
                         await FileSaver.instance.saveFile(
-                          name: '${vCard.firstName}.vcf',
-                          bytes: Uint8List.fromList(
-                            vCard.getFormattedString().codeUnits,
-                          ),
-                          mimeType: MimeType.custom,
-                          customMimeType: "text/vcard",
-                        );
+                            '${vCard.firstName}.vcf',
+                            Uint8List.fromList(
+                              vCard.getFormattedString().codeUnits,
+                            ),
+                            'vcf');
                       },
                       child: Text(
                         "Save Contact",
@@ -353,7 +351,7 @@ class _MyHomePageState extends State<MyHomePage> {
       result.add(
         ContactData(
           title: "WhatsApp",
-          icon: FontAwesomeIcons.whatsapp,
+          icon: Icons.whatsapp_outlined,
           onClick: () {
             launchUrl(Uri.parse("https://wa.me/${customer.whatsapp!}"));
           },

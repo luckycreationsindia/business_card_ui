@@ -1,5 +1,5 @@
-import 'package:business_card_ui/extensions.dart';
-import 'package:business_card_ui/src/models/Customer.dart';
+import 'package:businesscard/extensions.dart';
+import 'package:businesscard/src/models/Customer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
