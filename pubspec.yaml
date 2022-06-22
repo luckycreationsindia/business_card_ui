@@ -1,0 +1,34 @@
+name: businesscard
+description: Digital Business Card
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.5
+  vcard_maintained: ^0.0.1+1
+  file_saver: ^0.1.0
+  provider: ^6.0.3
+  url_launcher: ^6.1.3
+  retrofit: ^3.0.1+1
+  dio: ^4.0.6
+  dio_cookie_manager: ^2.0.0
+  url_strategy: ^0.2.0
+  json_annotation: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.1
+  retrofit_generator: any
+  build_runner: any
+  json_serializable: any
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
