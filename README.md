@@ -1,16 +1,19 @@
-# business_card_ui
+Business Card
 
-Digital Business Card
+Digital Business Card - A modern way to share Contact information with clients or anyone you like
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Simply clone this project and Run on Android Studio
 
-A few resources to get you started if this is your first Flutter project:
+<h2>**Note**</h2>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Make sure to change the ROOT URL inside utils.dart file and Rebuild with build_runner:
+
+`flutter pub run build_runner build`
+
+If you see any error like ***Conflicting outputs*** try below command:
+
+`flutter pub run build_runner build --delete-conflicting-outputs`
