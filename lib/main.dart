@@ -19,8 +19,6 @@ late Customer customerData;
 void main() async {
   setPathUrlStrategy();
   var dio = Dio();
-  // var cookieJar = CookieJar();
-  // dio.interceptors.add(CookieManager(cookieJar));
   dio.interceptors.add(
     InterceptorsWrapper(
       onResponse: (response, handler) {
@@ -56,6 +54,13 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: '${customerData.displayName} - Business Card',
         debugShowCheckedModeBanner: false,
+        initialRoute: "/",
+        onGenerateRoute: (RouteSettings settings) {
+          Widget? pageView = MyHomePage(title: '${customerData.displayName} - Business Card');
+          return MaterialPageRoute(
+              builder: (BuildContext context) => pageView,
+          );
+        },
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
