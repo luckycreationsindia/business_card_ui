@@ -1,4 +1,4 @@
-import 'package:businesscard/utils.dart';
+import 'package:business_card_ui/utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
