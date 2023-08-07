@@ -41,6 +41,10 @@ class Customer extends ChangeNotifier {
   String? bankDetails;
   String? about;
   String? notes;
+  String? city;
+  String? state;
+  String? country;
+  num? pincode;
 
   Customer({
     this.id,
@@ -67,6 +71,10 @@ class Customer extends ChangeNotifier {
     this.bankDetails,
     this.about,
     this.notes,
+    this.city,
+    this.state,
+    this.country,
+    this.pincode
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) =>
@@ -108,6 +116,10 @@ class Customer extends ChangeNotifier {
     bankDetails = customer.bankDetails;
     about = customer.about;
     notes = customer.notes;
+    city = customer.city;
+    state = customer.state;
+    country = customer.country;
+    pincode = customer.pincode;
     notifyListeners();
   }
 

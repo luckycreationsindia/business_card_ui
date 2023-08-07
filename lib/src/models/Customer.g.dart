@@ -35,6 +35,10 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) => Customer(
       bankDetails: json['bankDetails'] as String?,
       about: json['about'] as String?,
       notes: json['notes'] as String?,
+      city: json['city'] as String?,
+      state: json['state'] as String?,
+      country: json['country'] as String?,
+      pincode: json['pincode'] as num?,
     );
 
 Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
@@ -62,6 +66,10 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
       'bankDetails': instance.bankDetails,
       'about': instance.about,
       'notes': instance.notes,
+      'city': instance.city,
+      'state': instance.state,
+      'country': instance.country,
+      'pincode': instance.pincode,
     };
 
 // **************************************************************************

@@ -56,9 +56,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
         onGenerateRoute: (RouteSettings settings) {
-          Widget? pageView = MyHomePage(title: '${customerData.displayName} - Business Card');
+          Widget? pageView =
+              MyHomePage(title: '${customerData.displayName} - Business Card');
           return MaterialPageRoute(
-              builder: (BuildContext context) => pageView,
+            builder: (BuildContext context) => pageView,
           );
         },
         theme: ThemeData(
@@ -81,6 +82,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final homeKey = GlobalKey();
   final aboutKey = GlobalKey();
+  final addressKey = GlobalKey();
   final galleryKey = GlobalKey();
   final productKey = GlobalKey();
   final serviceKey = GlobalKey();
@@ -173,6 +175,16 @@ class _MyHomePageState extends State<MyHomePage> {
                             : null;
                         vCard.organization = customer.company ?? '';
                         vCard.jobTitle = customer.jobTitle ?? '';
+                        if (customer.address != null) {
+                          var address = MailingAddress('WORK');
+                          address.city = customer.city ?? '';
+                          address.stateProvince = customer.state ?? '';
+                          address.countryRegion = customer.country ?? '';
+                          address.postalCode =
+                              customer.pincode?.toString() ?? '';
+                          address.street = customer.address ?? '';
+                          vCard.workAddress = address;
+                        }
                         if (customer.profile != null &&
                             customer.profile!.isNotEmpty) {
                           vCard.photo.attachFromUrl(customer.profile!, 'JPEG');
@@ -213,6 +225,28 @@ class _MyHomePageState extends State<MyHomePage> {
                           const SizedBox(height: 10),
                           SelectableText(
                             customer.about!,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    )
+                  : Container(),
+              const SizedBox(height: 10),
+              customer.address != null && customer.address!.isNotEmpty
+                  ? ModuleCard(
+                      pageKey: addressKey,
+                      child: Column(
+                        children: [
+                          const Text(
+                            "Address",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          SelectableText(
+                            customer.address!,
                             textAlign: TextAlign.center,
                           ),
                         ],
