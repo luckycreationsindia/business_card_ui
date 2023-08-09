@@ -20,11 +20,11 @@ late Customer customerData;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String env = ".env";
-  if(!kDebugMode) env = "production.env";
+  if (!kDebugMode) env = "production.env";
   await dotenv.load(fileName: env);
   Consts.env = dotenv.env;
   setPathUrlStrategy();
-  if(Consts.env.containsKey("API_ROOT")) {
+  if (Consts.env.containsKey("API_ROOT")) {
     Consts.API_ROOT = Consts.env['API_ROOT']!;
   }
   var dio = Dio(BaseOptions(baseUrl: Consts.API_ROOT));
@@ -45,15 +45,29 @@ void main() async {
     ),
   );
   String id = Uri.base.queryParameters['id'] ?? "";
-  customerData = await CustomerRestClient(dio).loadCustomer(id);
-  runApp(const MyApp());
+  try {
+    customerData = await CustomerRestClient(dio).loadCustomer(id);
+  } catch (e) {}
+  runApp(MyApp(id: id));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String? id;
+
+  const MyApp({Key? key, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (id == null || id!.isEmpty) {
+      return MaterialApp(
+        title: '${customerData.displayName} - Business Card',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const WelcomePage(),
+      );
+    }
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<Customer>.value(
@@ -66,7 +80,7 @@ class MyApp extends StatelessWidget {
         initialRoute: "/",
         onGenerateRoute: (RouteSettings settings) {
           Widget? pageView =
-              MyHomePage(title: '${customerData.displayName} - Business Card');
+          MyHomePage(title: '${customerData.displayName} - Business Card');
           return MaterialPageRoute(
             builder: (BuildContext context) => pageView,
           );
@@ -137,10 +151,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: CircleAvatar(
                           radius: 10,
                           backgroundImage: customer.profile != null &&
-                                  customer.profile!.isNotEmpty
+                              customer.profile!.isNotEmpty
                               ? NetworkImage(customer.profile!)
                               : Image.asset('assets/images/img_avatar.png')
-                                  .image,
+                              .image,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -150,15 +164,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       customer.jobTitle != null && customer.jobTitle!.isNotEmpty
                           ? Text(
-                              customer.jobTitle!,
-                              textAlign: TextAlign.center,
-                            )
+                        customer.jobTitle!,
+                        textAlign: TextAlign.center,
+                      )
                           : Container(),
                       customer.company != null && customer.company!.isNotEmpty
                           ? Text(
-                              customer.company!,
-                              textAlign: TextAlign.center,
-                            )
+                        customer.company!,
+                        textAlign: TextAlign.center,
+                      )
                           : Container(),
                     ],
                   ),
@@ -180,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         vCard.lastName = customer.last_name ?? '';
                         vCard.formattedName = customer.displayName;
                         vCard.cellPhone = customer.contacts != null &&
-                                customer.contacts!.isNotEmpty
+                            customer.contacts!.isNotEmpty
                             ? customer.contacts![0]
                             : null;
                         vCard.organization = customer.company ?? '';
@@ -222,46 +236,46 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(height: 10),
               customer.about != null && customer.about!.isNotEmpty
                   ? ModuleCard(
-                      pageKey: aboutKey,
-                      child: Column(
-                        children: [
-                          const Text(
-                            "About",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          SelectableText(
-                            customer.about!,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                pageKey: aboutKey,
+                child: Column(
+                  children: [
+                    const Text(
+                      "About",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 10),
+                    SelectableText(
+                      customer.about!,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              )
                   : Container(),
               const SizedBox(height: 10),
               customer.address != null && customer.address!.isNotEmpty
                   ? ModuleCard(
-                      pageKey: addressKey,
-                      child: Column(
-                        children: [
-                          const Text(
-                            "Address",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          SelectableText(
-                            customer.address!,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                pageKey: addressKey,
+                child: Column(
+                  children: [
+                    const Text(
+                      "Address",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 10),
+                    SelectableText(
+                      customer.address!,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              )
                   : Container(),
               const SizedBox(height: 10),
               customer.gst != null && customer.gst!.isNotEmpty
@@ -287,79 +301,79 @@ class _MyHomePageState extends State<MyHomePage> {
                   : Container(),
               const SizedBox(height: 10),
               (customer.bankDetails != null &&
-                          customer.bankDetails!.isNotEmpty) ||
-                      (customer.upi != null && customer.upi!.isNotEmpty)
+                  customer.bankDetails!.isNotEmpty) ||
+                  (customer.upi != null && customer.upi!.isNotEmpty)
                   ? ModuleCard(
-                      pageKey: paymentKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Center(
-                            child: Text(
-                              "Payment Details",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          customer.bankDetails != null &&
-                                  customer.bankDetails!.isNotEmpty
-                              ? Container(
-                                  margin: const EdgeInsets.only(bottom: 10),
-                                  child: Text(
-                                      "Bank Details:\n${customer.bankDetails!}"),
-                                )
-                              : Container(),
-                          customer.upi != null && customer.upi!.isNotEmpty
-                              ? Container(
-                                  margin: const EdgeInsets.only(bottom: 10),
-                                  child: InkWell(
-                                    onTap: () {
-                                      String uri =
-                                          "upi://pay?pa=${customer.upi!}";
-                                      if (customer.upiData != null) {
-                                        if (customer.upiData!
-                                            .containsKey("pn")) {
-                                          uri +=
-                                              "&pn=${customer.upiData!['pn']}";
-                                        }
-                                        if (customer.upiData!
-                                            .containsKey("url")) {
-                                          uri +=
-                                              "&refUrl=${customer.upiData!['refUrl']}";
-                                          uri +=
-                                              "&url=${customer.upiData!['url']}";
-                                        }
-                                      }
-                                      launchUrl(Uri.parse(uri));
-                                    },
-                                    child: Text.rich(
-                                      TextSpan(
-                                        children: [
-                                          WidgetSpan(
-                                            child: SizedBox(
-                                              height: 15,
-                                              child: Image.asset(
-                                                "assets/images/upi_payment.png",
-                                              ),
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: "  ${customer.upi!}",
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                pageKey: paymentKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Center(
+                      child: Text(
+                        "Payment Details",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    customer.bankDetails != null &&
+                        customer.bankDetails!.isNotEmpty
+                        ? Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      child: Text(
+                          "Bank Details:\n${customer.bankDetails!}"),
+                    )
+                        : Container(),
+                    customer.upi != null && customer.upi!.isNotEmpty
+                        ? Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      child: InkWell(
+                        onTap: () {
+                          String uri =
+                              "upi://pay?pa=${customer.upi!}";
+                          if (customer.upiData != null) {
+                            if (customer.upiData!
+                                .containsKey("pn")) {
+                              uri +=
+                              "&pn=${customer.upiData!['pn']}";
+                            }
+                            if (customer.upiData!
+                                .containsKey("url")) {
+                              uri +=
+                              "&refUrl=${customer.upiData!['refUrl']}";
+                              uri +=
+                              "&url=${customer.upiData!['url']}";
+                            }
+                          }
+                          launchUrl(Uri.parse(uri));
+                        },
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              WidgetSpan(
+                                child: SizedBox(
+                                  height: 15,
+                                  child: Image.asset(
+                                    "assets/images/upi_payment.png",
                                   ),
-                                )
-                              : Container(),
-                        ],
+                                ),
+                              ),
+                              TextSpan(
+                                text: "  ${customer.upi!}",
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     )
+                        : Container(),
+                  ],
+                ),
+              )
                   : Container(),
             ],
           ),
@@ -476,5 +490,18 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     }
     return result;
+  }
+}
+
+class WelcomePage extends StatelessWidget {
+  const WelcomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text("Welcome to Digital Business Card"),
+      ),
+    );
   }
 }
