@@ -28,6 +28,7 @@ class Customer extends ChangeNotifier {
   String? email;
   String? website;
   String? address;
+  String? gst;
   num? latitude;
   num? longitude;
   String? facebook;
@@ -58,6 +59,7 @@ class Customer extends ChangeNotifier {
     this.email,
     this.website,
     this.address,
+    this.gst,
     this.latitude,
     this.longitude,
     this.facebook,
@@ -120,6 +122,7 @@ class Customer extends ChangeNotifier {
     state = customer.state;
     country = customer.country;
     pincode = customer.pincode;
+    gst = customer.gst;
     notifyListeners();
   }
 

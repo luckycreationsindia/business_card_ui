@@ -83,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final homeKey = GlobalKey();
   final aboutKey = GlobalKey();
   final addressKey = GlobalKey();
+  final gstKey = GlobalKey();
   final galleryKey = GlobalKey();
   final productKey = GlobalKey();
   final serviceKey = GlobalKey();
@@ -252,6 +253,28 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                     )
+                  : Container(),
+              const SizedBox(height: 10),
+              customer.gst != null && customer.gst!.isNotEmpty
+                  ? ModuleCard(
+                pageKey: gstKey,
+                child: Column(
+                  children: [
+                    const Text(
+                      "GST No.",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    SelectableText(
+                      customer.gst!,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              )
                   : Container(),
               const SizedBox(height: 10),
               (customer.bankDetails != null &&
