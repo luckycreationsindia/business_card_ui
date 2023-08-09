@@ -1,4 +1,3 @@
-import 'package:business_card_ui/utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -12,6 +11,10 @@ abstract class CustomerRestClient {
 
   @GET("/c/{id}")
   Future<Customer> loadCustomer(@Path("id") String id);
+
+  @POST("/c/load")
+  Future<List<Customer>> loadCustomerList(@Body() Map<String, dynamic> body,
+      {@Header('Content-Type') String contentType = 'application/json'});
 }
 
 @JsonSerializable()
@@ -47,8 +50,7 @@ class Customer extends ChangeNotifier {
   String? country;
   num? pincode;
 
-  Customer({
-    this.id,
+  Customer({this.id,
     this.first_name = '',
     this.last_name,
     this.company,
@@ -76,8 +78,7 @@ class Customer extends ChangeNotifier {
     this.city,
     this.state,
     this.country,
-    this.pincode
-  });
+    this.pincode});
 
   factory Customer.fromJson(Map<String, dynamic> json) =>
       _$CustomerFromJson(json);
