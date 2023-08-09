@@ -19,8 +19,8 @@ late Customer customerData;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  String env = ".env";
-  if (!kDebugMode) env = "production.env";
+  String env = "assets/.env";
+  if (!kDebugMode) env = "assets/production.env";
   await dotenv.load(fileName: env);
   Consts.env = dotenv.env;
   setPathUrlStrategy();
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     if (id == null || id!.isEmpty) {
       return MaterialApp(
-        title: '${customerData.displayName} - Business Card',
+        title: 'Digital Business Card',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
