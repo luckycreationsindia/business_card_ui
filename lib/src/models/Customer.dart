@@ -6,7 +6,7 @@ import 'package:retrofit/http.dart';
 
 part 'Customer.g.dart';
 
-@RestApi(baseUrl: Consts.API_ROOT)
+@RestApi()
 abstract class CustomerRestClient {
   factory CustomerRestClient(Dio dio, {String baseUrl}) = _CustomerRestClient;
 

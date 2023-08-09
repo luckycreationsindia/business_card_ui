@@ -1,13 +1,14 @@
-import 'dart:typed_data';
-
 import 'package:business_card_ui/extensions.dart';
 import 'package:business_card_ui/src/models/Customer.dart';
 import 'package:business_card_ui/src/views/BottomNavButton.dart';
 import 'package:business_card_ui/src/views/ContactData.dart';
 import 'package:business_card_ui/src/views/ModuleCard.dart';
+import 'package:business_card_ui/utils.dart';
 import 'package:dio/dio.dart';
 import 'package:file_saver/file_saver.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -17,8 +18,16 @@ import 'package:vcard_maintained/vcard_maintained.dart';
 late Customer customerData;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  String env = ".env";
+  if(!kDebugMode) env = "production.env";
+  await dotenv.load(fileName: env);
+  Consts.env = dotenv.env;
   setPathUrlStrategy();
-  var dio = Dio();
+  if(Consts.env.containsKey("API_ROOT")) {
+    Consts.API_ROOT = Consts.env['API_ROOT']!;
+  }
+  var dio = Dio(BaseOptions(baseUrl: Consts.API_ROOT));
   dio.interceptors.add(
     InterceptorsWrapper(
       onResponse: (response, handler) {

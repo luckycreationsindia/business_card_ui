@@ -1,3 +1,4 @@
 class Consts {
-  static const String API_ROOT = "https://dapi.myindia.app/api/v1/";
+  static String API_ROOT = "https://dapi.myindia.app/api/v1/";
+  static late Map<String, String> env;
 }

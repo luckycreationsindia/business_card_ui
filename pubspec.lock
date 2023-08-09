@@ -253,10 +253,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_saver
-      sha256: e46d27c95a77f99ae9b1613a4db59ea565d511a251ec1b93b495e80fc4139c76
+      sha256: "591d25e750e3a4b654f7b0293abc2ed857242f82ca7334051b2a8ceeb369dac8"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.7"
+    version: "0.2.8"
   fixnum:
     dependency: transitive
     description:
@@ -270,6 +270,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_dotenv:
+    dependency: "direct main"
+    description:
+      name: flutter_dotenv
+      sha256: "9357883bdd153ab78cbf9ffa07656e336b8bbb2b5a3ca596b0b27e119f7c7d77"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:

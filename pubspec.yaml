@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.5
   vcard_maintained: ^0.0.1+1
-  file_saver: ^0.2.7
+  file_saver: ^0.2.8
   provider: ^6.0.5
   url_launcher: ^6.1.12
   retrofit: ^4.0.1
@@ -20,6 +20,7 @@ dependencies:
   url_strategy: ^0.2.0
   font_awesome_flutter: ^10.5.0
   json_annotation: any
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:

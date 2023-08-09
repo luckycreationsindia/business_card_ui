@@ -84,9 +84,7 @@ class _CustomerRestClient implements CustomerRestClient {
   _CustomerRestClient(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'https://dapi.myindia.app/api/v1/';
-  }
+  });
 
   final Dio _dio;
 
