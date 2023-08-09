@@ -20,11 +20,11 @@ late Customer customerData;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String env = ".env";
-  if (!kDebugMode) env = "production.env";
+  if(!kDebugMode) env = "production.env";
   await dotenv.load(fileName: env);
   Consts.env = dotenv.env;
   setPathUrlStrategy();
-  if (Consts.env.containsKey("API_ROOT")) {
+  if(Consts.env.containsKey("API_ROOT")) {
     Consts.API_ROOT = Consts.env['API_ROOT']!;
   }
   var dio = Dio(BaseOptions(baseUrl: Consts.API_ROOT));
@@ -45,29 +45,15 @@ void main() async {
     ),
   );
   String id = Uri.base.queryParameters['id'] ?? "";
-  try {
-    customerData = await CustomerRestClient(dio).loadCustomer(id);
-  } catch (e) {}
-  runApp(MyApp(id: id));
+  customerData = await CustomerRestClient(dio).loadCustomer(id);
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final String? id;
-
-  const MyApp({Key? key, required this.id}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (id == null || id!.isEmpty) {
-      return MaterialApp(
-        title: '${customerData.displayName} - Business Card',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const WelcomePage(),
-      );
-    }
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<Customer>.value(
@@ -280,24 +266,24 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(height: 10),
               customer.gst != null && customer.gst!.isNotEmpty
                   ? ModuleCard(
-                      pageKey: gstKey,
-                      child: Column(
-                        children: [
-                          const Text(
-                            "GST No.",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          SelectableText(
-                            customer.gst!,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                pageKey: gstKey,
+                child: Column(
+                  children: [
+                    const Text(
+                      "GST No.",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 10),
+                    SelectableText(
+                      customer.gst!,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              )
                   : Container(),
               const SizedBox(height: 10),
               (customer.bankDetails != null &&
@@ -490,18 +476,5 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     }
     return result;
-  }
-}
-
-class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text("Welcome to Digital Business Card"),
-      ),
-    );
   }
 }
