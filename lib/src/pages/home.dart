@@ -94,6 +94,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               textAlign: TextAlign.center,
                             )
                           : Container(),
+                      customer.sectors != null && customer.sectors!.isNotEmpty
+                          ? Text(
+                              customer.sectors!.toString(),
+                              textAlign: TextAlign.center,
+                            )
+                          : Container(),
                     ],
                   ),
                 ),
