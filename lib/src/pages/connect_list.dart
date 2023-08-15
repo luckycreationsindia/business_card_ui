@@ -60,32 +60,27 @@ class _ConnectListPageState extends State<ConnectListPage> {
                         ),
                       ),
                     ),
-                    Image.asset(
-                      "assets/images/logo.png",
-                      height: 50,
-                      width: 50,
-                    ),
+                    isLoading
+                        ? const SizedBox.shrink()
+                        : Image.asset(
+                            "assets/images/logo.png",
+                            height: 50,
+                            width: 50,
+                          ),
+                    isLoading
+                        ? const CircularProgressIndicator()
+                        : const SizedBox.shrink()
                   ],
                 ),
                 const SizedBox(height: 20),
                 Expanded(
-                  child: Stack(
-                    children: [
-                      ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        controller: _scrollController,
-                        itemCount: customerList.length,
-                        itemBuilder: (context, index) {
-                          return getRow(customer: customerList[index]);
-                        },
-                      ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: isLoading
-                            ? const CircularProgressIndicator()
-                            : const SizedBox(),
-                      ),
-                    ],
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    controller: _scrollController,
+                    itemCount: customerList.length,
+                    itemBuilder: (context, index) {
+                      return getRow(customer: customerList[index]);
+                    },
                   ),
                 ),
               ],
@@ -131,59 +126,59 @@ class _ConnectListPageState extends State<ConnectListPage> {
           customBorder: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          child: Expanded(
-            child: Container(
-              margin: const EdgeInsets.all(10),
-              child: Row(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child:
-                        customer.profile != null && customer.profile!.isNotEmpty
-                            ? Image.network(
-                                customer.profile ?? '',
-                                height: 100,
-                                width: 100,
-                              )
-                            : Image.asset(
-                                "assets/images/img_avatar.png",
-                                height: 100,
-                                width: 100,
-                              ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            customer.displayName,
-                            style: const TextStyle(fontSize: 20),
-                            textAlign: TextAlign.left,
-                          ),
-                          Text.rich(
-                            TextSpan(
-                              text: customer.company ?? "",
-                              children: [
-                                const TextSpan(text: "\n"),
-                                TextSpan(text: customer.jobTitle ?? ""),
-                              ],
+          child: Container(
+            margin: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child:
+                      customer.profile != null && customer.profile!.isNotEmpty
+                          ? Image.network(
+                              customer.profile ?? '',
+                              height: 100,
+                              width: 100,
+                            )
+                          : Image.asset(
+                              "assets/images/img_avatar.png",
+                              height: 100,
+                              width: 100,
                             ),
-                            textAlign: TextAlign.left,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          customer.displayName,
+                          style: const TextStyle(fontSize: 20),
+                          textAlign: TextAlign.left,
+                        ),
+                        Text.rich(
+                          TextSpan(
+                            text: customer.company ?? "",
+                            children: [
+                              const TextSpan(text: "\n"),
+                              TextSpan(text: customer.jobTitle ?? ""),
+                            ],
                           ),
-                        ],
-                      ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
                     ),
                   ),
-                  const Icon(Icons.chevron_right),
-                ],
-              ),
+                ),
+                const Icon(Icons.chevron_right),
+              ],
             ),
           ),
         ),
-        customer.sectors != null && customer.sectors!.isNotEmpty ? const SizedBox(height: 10) : const SizedBox(),
+        customer.sectors != null && customer.sectors!.isNotEmpty
+            ? const SizedBox(height: 10)
+            : const SizedBox(),
         customer.sectors != null && customer.sectors!.isNotEmpty
             ? Align(
                 alignment: Alignment.bottomRight,
@@ -203,7 +198,9 @@ class _ConnectListPageState extends State<ConnectListPage> {
                 ),
               )
             : const SizedBox(),
-        customer.sectors != null && customer.sectors!.isNotEmpty ? const SizedBox(height: 10) : const SizedBox(),
+        customer.sectors != null && customer.sectors!.isNotEmpty
+            ? const SizedBox(height: 10)
+            : const SizedBox(),
       ],
     );
   }
@@ -218,12 +215,15 @@ class _ConnectListPageState extends State<ConnectListPage> {
 
     Map<String, dynamic> data = {"page": page};
 
-    if(selectedSector.isNotEmpty) {
-      data['filter'] = {"sectors": { "\$in": [selectedSector] }};
+    if (selectedSector.isNotEmpty) {
+      data['filter'] = {
+        "sectors": {
+          "\$in": [selectedSector]
+        }
+      };
     }
 
-    CustomerRestClient(Consts.dio)
-        .loadCustomerList(data).then((value) {
+    CustomerRestClient(Consts.dio).loadCustomerList(data).then((value) {
       if (value.isEmpty) {
         hasMore = false;
       }
