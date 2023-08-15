@@ -49,8 +49,13 @@ class Customer extends ChangeNotifier {
   String? state;
   String? country;
   num? pincode;
+  @JsonKey(name: 'short_path')
+  String? shortPath;
+  List<String>? sectors;
+  List<String>? tags;
 
-  Customer({this.id,
+  Customer({
+    this.id,
     this.first_name = '',
     this.last_name,
     this.company,
@@ -78,7 +83,11 @@ class Customer extends ChangeNotifier {
     this.city,
     this.state,
     this.country,
-    this.pincode});
+    this.pincode,
+    this.shortPath,
+    this.sectors,
+    this.tags,
+  });
 
   factory Customer.fromJson(Map<String, dynamic> json) =>
       _$CustomerFromJson(json);
@@ -124,6 +133,9 @@ class Customer extends ChangeNotifier {
     country = customer.country;
     pincode = customer.pincode;
     gst = customer.gst;
+    shortPath = customer.shortPath;
+    sectors = customer.sectors;
+    tags = customer.tags;
     notifyListeners();
   }
 

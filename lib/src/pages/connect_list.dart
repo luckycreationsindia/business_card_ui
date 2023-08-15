@@ -1,7 +1,10 @@
 import 'package:business_card_ui/src/models/Customer.dart';
+import 'package:business_card_ui/src/models/misc.dart';
+import 'package:business_card_ui/src/views/MainTheme.dart';
 import 'package:business_card_ui/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
+import 'package:simple_tags/simple_tags.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ConnectListPage extends StatefulWidget {
@@ -36,57 +39,7 @@ class _ConnectListPageState extends State<ConnectListPage> {
     return Title(
       title: "Connect - Digital Business Card",
       color: Colors.indigo,
-      child: Theme(
-        data: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.indigo,
-            background: const Color(0xFF2C2540),
-            brightness: Brightness.dark,
-          ),
-          useMaterial3: true,
-          primaryTextTheme: GoogleFonts.promptTextTheme(
-            Theme.of(context)
-                .primaryTextTheme
-                .copyWith(
-                  bodyLarge: const TextStyle(),
-                  bodyMedium: const TextStyle(),
-                  bodySmall: const TextStyle(),
-                )
-                .apply(
-                  bodyColor: const Color(0xFFE9E6F0),
-                  displayColor: const Color(0xFFE9E6F0),
-                ),
-          ),
-          textTheme: GoogleFonts.promptTextTheme(
-            Theme.of(context)
-                .primaryTextTheme
-                .copyWith(
-                  bodyLarge: const TextStyle(),
-                  bodyMedium: const TextStyle(),
-                  bodySmall: const TextStyle(),
-                )
-                .apply(
-                  bodyColor: const Color(0xFFE9E6F0),
-                  displayColor: const Color(0xFFE9E6F0),
-                ),
-          ),
-          inputDecorationTheme: Theme.of(context).inputDecorationTheme.copyWith(
-                fillColor: const Color(0xFF1E2032),
-                hintStyle: const TextStyle(color: Color(0xFF424A70)),
-                iconColor: const Color(0xFF424A70),
-              ),
-          searchBarTheme: Theme.of(context).searchBarTheme.copyWith(
-              backgroundColor:
-                  const MaterialStatePropertyAll(Color(0xFF1E2032)),
-              elevation: const MaterialStatePropertyAll(0),
-              overlayColor: const MaterialStatePropertyAll(Color(0xFF1E2032)),
-              hintStyle: const MaterialStatePropertyAll(
-                TextStyle(color: Color(0xFF424A70)),
-              ),
-              shape: MaterialStatePropertyAll(
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              )),
-        ),
+      child: MainTheme(
         child: Scaffold(
           backgroundColor: const Color(0xFF2C2540),
           body: Container(
@@ -99,7 +52,7 @@ class _ConnectListPageState extends State<ConnectListPage> {
                   children: [
                     const Expanded(
                       child: Text(
-                        "Connect with Others",
+                        "Let's make some connections",
                         style: TextStyle(
                           fontSize: 30,
                           color: Color(0xFFE9E6F0),
@@ -115,17 +68,39 @@ class _ConnectListPageState extends State<ConnectListPage> {
                 ),
                 const SizedBox(height: 20),
                 Expanded(
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: customerList.length,
-                    itemBuilder: (context, index) {
-                      return getRow(customer: customerList[index]);
-                    },
+                  child: Stack(
+                    children: [
+                      ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        controller: _scrollController,
+                        itemCount: customerList.length,
+                        itemBuilder: (context, index) {
+                          return getRow(customer: customerList[index]);
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: isLoading
+                            ? const CircularProgressIndicator()
+                            : const SizedBox(),
+                      ),
+                    ],
                   ),
                 ),
-                isLoading
-                    ? const CircularProgressIndicator()
-                    : const SizedBox(),
+              ],
+            ),
+          ),
+          bottomNavigationBar: Container(
+            height: 55,
+            color: const Color(0xFF2C2540),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () => showSectorDialog(),
+                  icon: const Icon(Icons.filter_alt, size: 24),
+                ),
               ],
             ),
           ),
@@ -135,55 +110,93 @@ class _ConnectListPageState extends State<ConnectListPage> {
   }
 
   Widget getRow({required Customer customer}) {
-    return InkWell(
-      onTap: () {
-        String url = "${Uri.base.origin}/?id=${customer.id!}";
-        launchUrl(
-          Uri.parse(url),
-          webOnlyWindowName: '_blank',
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.all(10),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: customer.profile != null && customer.profile!.isNotEmpty
-                  ? Image.network(
-                      customer.profile ?? '',
-                      height: 100,
-                      width: 100,
-                    )
-                  : Image.asset(
-                      "assets/images/img_avatar.png",
-                      height: 100,
-                      width: 100,
-                    ),
-            ),
-            Expanded(
-              child: Column(
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {
+            String url = "${Uri.base.origin}/?id=${customer.id!}";
+            launchUrl(
+              Uri.parse(url),
+              webOnlyWindowName: '_blank',
+            );
+          },
+          customBorder: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Expanded(
+            child: Container(
+              margin: const EdgeInsets.all(10),
+              child: Row(
                 children: [
-                  Text(
-                    customer.displayName,
-                    style: const TextStyle(fontSize: 20),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child:
+                        customer.profile != null && customer.profile!.isNotEmpty
+                            ? Image.network(
+                                customer.profile ?? '',
+                                height: 100,
+                                width: 100,
+                              )
+                            : Image.asset(
+                                "assets/images/img_avatar.png",
+                                height: 100,
+                                width: 100,
+                              ),
                   ),
-                  Text.rich(
-                    TextSpan(
-                      text: customer.company ?? "",
-                      children: [
-                        const TextSpan(text: "\n"),
-                        TextSpan(text: customer.jobTitle ?? ""),
-                      ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            customer.displayName,
+                            style: const TextStyle(fontSize: 20),
+                            textAlign: TextAlign.left,
+                          ),
+                          Text.rich(
+                            TextSpan(
+                              text: customer.company ?? "",
+                              children: [
+                                const TextSpan(text: "\n"),
+                                TextSpan(text: customer.jobTitle ?? ""),
+                              ],
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                  const Icon(Icons.chevron_right),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right),
-          ],
+          ),
         ),
-      ),
+        customer.sectors != null && customer.sectors!.isNotEmpty ? const SizedBox(height: 10) : const SizedBox(),
+        customer.sectors != null && customer.sectors!.isNotEmpty
+            ? Align(
+                alignment: Alignment.bottomRight,
+                child: SimpleTags(
+                  content: customer.sectors!,
+                  wrapSpacing: 4,
+                  wrapRunSpacing: 4,
+                  tagContainerPadding: const EdgeInsets.all(6),
+                  tagTextStyle: const TextStyle(color: Colors.white),
+                  tagContainerDecoration: BoxDecoration(
+                    color: Colors.deepPurple,
+                    border: Border.all(color: Colors.orangeAccent),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                  ),
+                ),
+              )
+            : const SizedBox(),
+        customer.sectors != null && customer.sectors!.isNotEmpty ? const SizedBox(height: 10) : const SizedBox(),
+      ],
     );
   }
 
@@ -208,5 +221,66 @@ class _ConnectListPageState extends State<ConnectListPage> {
         isLoading = false;
       });
     });
+  }
+
+  Future<void> showSectorDialog() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return MainTheme(
+          child: FutureBuilder<List<String>>(
+            future: loadSectorList(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              List<String> sectors = snapshot.data ?? [];
+              return SimpleDialog(
+                title: const Text('Choose Sector'),
+                children: sectors.map((sector) {
+                  return SimpleDialogOption(
+                    onPressed: () {
+                      context.pop(sector);
+                    },
+                    child: Text(sector),
+                  );
+                }).toList(),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Future<List<String>> loadSectorList() {
+    return MiscRestClient(Consts.dio).getSectors();
+  }
+
+  Future<void> showSubSectorDialog() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return MainTheme(
+          child: SimpleDialog(
+            title: const Text('Choose Sub Sector'),
+            children: <Widget>[
+              SimpleDialogOption(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Sub Option 1"),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

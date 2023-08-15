@@ -40,6 +40,10 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) => Customer(
       state: json['state'] as String?,
       country: json['country'] as String?,
       pincode: json['pincode'] as num?,
+      shortPath: json['short_path'] as String?,
+      sectors:
+          (json['sectors'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
@@ -72,6 +76,9 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
       'state': instance.state,
       'country': instance.country,
       'pincode': instance.pincode,
+      'short_path': instance.shortPath,
+      'sectors': instance.sectors,
+      'tags': instance.tags,
     };
 
 // **************************************************************************

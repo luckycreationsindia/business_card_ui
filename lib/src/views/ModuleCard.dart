@@ -11,7 +11,7 @@ class ModuleCard extends StatelessWidget {
     double moduleWidth = MediaQuery.of(context).size.width > 400 ? 400 : MediaQuery.of(context).size.width;
 
     return Card(
-      key: key,
+      key: pageKey,
       margin: EdgeInsets.zero,
       elevation: 0,
       child: SizedBox(
