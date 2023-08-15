@@ -17,6 +17,7 @@ class ConnectListPage extends StatefulWidget {
 class _ConnectListPageState extends State<ConnectListPage> {
   final ScrollController _scrollController = ScrollController();
   List<Customer> customerList = [];
+  String selectedSector = "";
   bool isLoading = true;
   bool hasMore = true;
   int page = 0;
@@ -98,7 +99,14 @@ class _ConnectListPageState extends State<ConnectListPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 IconButton(
-                  onPressed: () => showSectorDialog(),
+                  onPressed: () => showSectorDialog().then((value) {
+                    isLoading = true;
+                    selectedSector = value ?? "";
+                    customerList.clear();
+                    hasMore = true;
+                    page = 0;
+                    loadCustomerList();
+                  }),
                   icon: const Icon(Icons.filter_alt, size: 24),
                 ),
               ],
@@ -208,8 +216,14 @@ class _ConnectListPageState extends State<ConnectListPage> {
 
     page++;
 
+    Map<String, dynamic> data = {"page": page};
+
+    if(selectedSector.isNotEmpty) {
+      data['filter'] = {"sectors": { "\$in": [selectedSector] }};
+    }
+
     CustomerRestClient(Consts.dio)
-        .loadCustomerList({"page": page}).then((value) {
+        .loadCustomerList(data).then((value) {
       if (value.isEmpty) {
         hasMore = false;
       }
@@ -223,8 +237,8 @@ class _ConnectListPageState extends State<ConnectListPage> {
     });
   }
 
-  Future<void> showSectorDialog() {
-    return showDialog(
+  Future<String?> showSectorDialog() {
+    return showDialog<String>(
       context: context,
       builder: (context) {
         return MainTheme(
@@ -240,7 +254,8 @@ class _ConnectListPageState extends State<ConnectListPage> {
                   ),
                 );
               }
-              List<String> sectors = snapshot.data ?? [];
+              List<String> sectors = (snapshot.data ?? []);
+              sectors.sort((a, b) => a.toString().compareTo(b.toString()));
               return SimpleDialog(
                 title: const Text('Choose Sector'),
                 children: sectors.map((sector) {
@@ -259,28 +274,8 @@ class _ConnectListPageState extends State<ConnectListPage> {
     );
   }
 
-  Future<List<String>> loadSectorList() {
-    return MiscRestClient(Consts.dio).getSectors();
-  }
-
-  Future<void> showSubSectorDialog() {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return MainTheme(
-          child: SimpleDialog(
-            title: const Text('Choose Sub Sector'),
-            children: <Widget>[
-              SimpleDialogOption(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("Sub Option 1"),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+  Future<List<String>> loadSectorList() async {
+    List<String> result = await MiscRestClient(Consts.dio).getSectors();
+    return Future.value(result);
   }
 }
