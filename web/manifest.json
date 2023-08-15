@@ -1,11 +1,11 @@
 {
-    "name": "business_card_ui",
-    "short_name": "business_card_ui",
-    "start_url": ".",
+    "name": "Digital Business Card - Connect",
+    "short_name": "BusinessCard",
+    "start_url": "./connect",
     "display": "standalone",
     "background_color": "#2C2540",
     "theme_color": "#2C2540",
-    "description": "Digital Business Card",
+    "description": "Digital Business Card - Connect",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
