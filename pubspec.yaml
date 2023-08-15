@@ -1,7 +1,7 @@
 name: business_card_ui
 description: Digital Business Card
 publish_to: 'none'
-version: 1.0.3
+version: 1.0.4
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
