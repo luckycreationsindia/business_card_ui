@@ -41,7 +41,7 @@ void main() async {
   Consts.dio = dio;
 
   String id = Uri.base.queryParameters['id'] ?? "";
-  if(id.isNotEmpty) {
+  if (id.isNotEmpty) {
     try {
       customerData = await CustomerRestClient(dio).loadCustomer(id);
     } catch (e) {}
@@ -70,9 +70,7 @@ class MyApp extends StatelessWidget {
     }
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<Customer>.value(
-          value: customerData,
-        ),
+        ChangeNotifierProvider<Customer>.value(value: customerData),
       ],
       child: MaterialApp.router(
         title: '${customerData.displayName} - Business Card',
