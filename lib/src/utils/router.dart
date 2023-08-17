@@ -1,7 +1,6 @@
 import 'package:business_card_ui/src/models/Customer.dart';
 import 'package:business_card_ui/src/pages/connect_list.dart';
 import 'package:business_card_ui/src/pages/home.dart';
-import 'package:business_card_ui/src/pages/welcome.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +21,7 @@ final welcomeRouterList = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const WelcomePage(),
+      builder: (context, state) => const ConnectListPage(),
     ),
     GoRoute(
       path: '/connect',
