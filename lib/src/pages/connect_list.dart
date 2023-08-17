@@ -182,18 +182,26 @@ class _ConnectListPageState extends State<ConnectListPage> {
         customer.sectors != null && customer.sectors!.isNotEmpty
             ? Align(
                 alignment: Alignment.bottomRight,
-                child: SimpleTags(
-                  content: customer.sectors!,
-                  wrapSpacing: 4,
-                  wrapRunSpacing: 4,
-                  tagContainerPadding: const EdgeInsets.all(6),
-                  tagTextStyle: const TextStyle(color: Colors.white),
-                  tagContainerDecoration: BoxDecoration(
-                    color: Colors.deepPurple,
-                    border: Border.all(color: Colors.orangeAccent),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(20),
-                    ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: customer.sectors!.map((sector) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Chip(
+                          label: Text(
+                            sector,
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                          backgroundColor: Colors.orangeAccent.withOpacity(0.2),
+                          elevation: 0,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                            side: BorderSide.none,
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ),
               )
