@@ -13,7 +13,13 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:vcard_maintained/vcard_maintained.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  final Customer? customer;
+
+  const MyHomePage({
+    Key? key,
+    required this.title,
+    this.customer,
+  }) : super(key: key);
   final String title;
 
   @override
@@ -32,28 +38,29 @@ class _MyHomePageState extends State<MyHomePage> {
   final paymentKey = GlobalKey();
   final connectKey = GlobalKey();
 
+  // bool getFontColorForBackground(Color color) {
+  //   return color.computeLuminance() > 0.179;
+  // }
+
   @override
-  void initState() {
-    Customer customer = Provider.of<Customer>(context);
+  Widget build(BuildContext context) {
+    Customer customer = widget.customer ?? Provider.of<Customer>(context);
     Color mainColor = HexColor.fromHex(customer.mainColor);
+    // bool isLight = getFontColorForBackground(mainColor);
+    // print(isLight);
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: mainColor,
       statusBarColor: mainColor,
       statusBarBrightness: Brightness.dark,
-      statusBarIconBrightness:Brightness.dark,
+      statusBarIconBrightness: Brightness.dark,
       systemNavigationBarDividerColor: mainColor,
       systemNavigationBarIconBrightness: Brightness.light,
     ));
-    super.initState();
-  }
 
-  @override
-  Widget build(BuildContext context) {
     double moduleWidth = MediaQuery.of(context).size.width > 400
         ? 400
         : MediaQuery.of(context).size.width;
-    Customer customer = Provider.of<Customer>(context);
-    Color mainColor = HexColor.fromHex(customer.mainColor);
     final fullWidth = MediaQuery.of(context).size.width;
     final margins = (fullWidth - moduleWidth) / 2;
 
@@ -116,9 +123,32 @@ class _MyHomePageState extends State<MyHomePage> {
                               )
                             : Container(),
                         customer.sectors != null && customer.sectors!.isNotEmpty
-                            ? Text(
-                                customer.sectors!.toString(),
-                                textAlign: TextAlign.center,
+                            ? SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: customer.sectors!.map((sector) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 5),
+                                      child: Chip(
+                                        label: Text(
+                                          sector,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        backgroundColor:
+                                            mainColor.withOpacity(0.2),
+                                        elevation: 0,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.zero,
+                                          side: BorderSide.none,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
                               )
                             : Container(),
                       ],
