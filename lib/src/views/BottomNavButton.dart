@@ -21,10 +21,12 @@ class BottomNavButton extends StatelessWidget {
       child: Column(
         children: [
           IconButton(
-            onPressed: () => Scrollable.ensureVisible(
-              pageKey.currentContext!,
-              duration: const Duration(seconds: 2),
-            ),
+            onPressed: () => pageKey.currentContext != null
+                ? Scrollable.ensureVisible(
+                    pageKey.currentContext!,
+                    duration: const Duration(seconds: 2),
+                  )
+                : null,
             icon: Icon(
               icon,
               color: HexColor.fromHex(Provider.of<Customer>(context).appColor),
