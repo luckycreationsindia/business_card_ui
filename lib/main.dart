@@ -41,9 +41,11 @@ void main() async {
   Consts.dio = dio;
 
   String id = Uri.base.queryParameters['id'] ?? "";
-  try {
-    customerData = await CustomerRestClient(dio).loadCustomer(id);
-  } catch (e) {}
+  if(id.isNotEmpty) {
+    try {
+      customerData = await CustomerRestClient(dio).loadCustomer(id);
+    } catch (e) {}
+  }
   runApp(MyApp(id: id));
 }
 
