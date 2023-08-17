@@ -4,7 +4,6 @@ import 'package:business_card_ui/src/views/MainTheme.dart';
 import 'package:business_card_ui/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simple_tags/simple_tags.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ConnectListPage extends StatefulWidget {
@@ -265,16 +264,30 @@ class _ConnectListPageState extends State<ConnectListPage> {
               List<String> sectors = (snapshot.data ?? []);
               sectors.sort((a, b) => a.toString().compareTo(b.toString()));
               return SimpleDialog(
-                title: const Text('Choose Sector'),
-                children: sectors.map((sector) {
-                  return SimpleDialogOption(
-                    onPressed: () {
-                      context.pop(sector);
-                    },
-                    child: Text(sector),
-                  );
-                }).toList(),
-              );
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const SizedBox(),
+                      const Text('Choose Sector'),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          onPressed: () {
+                            context.pop("");
+                          },
+                          icon: const Icon(Icons.clear),
+                        ),
+                      ),
+                    ],
+                  ),
+                  children: sectors.map((sector) {
+                    return SimpleDialogOption(
+                      onPressed: () {
+                        context.pop(sector);
+                      },
+                      child: Text(sector),
+                    );
+                  }).toList());
             },
           ),
         );
