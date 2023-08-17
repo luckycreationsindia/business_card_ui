@@ -50,13 +50,13 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final String? id;
+  final String id;
 
   const MyApp({Key? key, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (id == null || id!.isEmpty) {
+    if (id.isEmpty) {
       return MaterialApp.router(
         title: 'Digital Business Card',
         debugShowCheckedModeBanner: false,
