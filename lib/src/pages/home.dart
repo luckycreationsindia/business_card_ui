@@ -87,12 +87,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   elevation: 0,
                   child: SizedBox(
                     width: moduleWidth,
-                    height: 200,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
+                        Container(
+                          margin: const EdgeInsets.only(top: 10),
                           height: 100,
                           width: 100,
                           child: CircleAvatar(
@@ -129,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   children: customer.sectors!.map((sector) {
                                     return Container(
                                       margin: const EdgeInsets.symmetric(
-                                          horizontal: 5),
+                                          horizontal: 5, vertical: 10),
                                       child: Chip(
                                         label: Text(
                                           sector,
