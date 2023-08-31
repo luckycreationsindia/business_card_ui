@@ -302,13 +302,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                     customer.bankDetails!.isNotEmpty
                                 ? Container(
                                     margin: const EdgeInsets.only(bottom: 10),
-                                    child: Text(
+                                    child: SelectableText(
                                         "Bank Details:\n${customer.bankDetails!}"),
                                   )
                                 : Container(),
                             customer.upi != null && customer.upi!.isNotEmpty
                                 ? Container(
-                                    margin: const EdgeInsets.only(bottom: 10),
+                                    margin: const EdgeInsets.symmetric(vertical: 10),
                                     child: InkWell(
                                       onTap: () {
                                         String uri =
@@ -340,8 +340,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 ),
                                               ),
                                             ),
-                                            TextSpan(
-                                              text: "  ${customer.upi!}",
+                                            WidgetSpan(
+                                              child: SelectableText(
+                                                " ${customer.upi!}",
+                                              ),
                                             ),
                                           ],
                                         ),
