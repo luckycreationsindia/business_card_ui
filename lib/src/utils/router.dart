@@ -1,14 +1,12 @@
-import 'package:business_card_ui/src/models/Customer.dart';
 import 'package:business_card_ui/src/pages/connect_list.dart';
 import 'package:business_card_ui/src/pages/home.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 final routerList = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => MyHomePage(title: '${Provider.of<Customer>(context).displayName} - Business Card'),
+      builder: (context, state) => const MyHomePage(),
     ),
     GoRoute(
       path: '/connect',
