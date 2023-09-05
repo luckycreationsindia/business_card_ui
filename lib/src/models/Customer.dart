@@ -105,6 +105,7 @@ class Customer extends ChangeNotifier {
   }
 
   void update(Customer customer) {
+    id = customer.id ?? id;
     first_name = customer.first_name;
     last_name = customer.last_name;
     company = customer.company;
