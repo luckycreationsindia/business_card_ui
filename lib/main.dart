@@ -9,8 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
-late Customer customerData;
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   String env = "assets/.env";
@@ -39,13 +37,7 @@ void main() async {
     ),
   );
   Consts.dio = dio;
-
   String id = Uri.base.queryParameters['id'] ?? "";
-  if (id.isNotEmpty) {
-    try {
-      customerData = await CustomerRestClient(dio).loadCustomer(id);
-    } catch (e) {}
-  }
   runApp(MyApp(id: id));
 }
 
@@ -70,10 +62,10 @@ class MyApp extends StatelessWidget {
     }
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<Customer>.value(value: customerData),
+        ChangeNotifierProvider<Customer>.value(value: Customer()),
       ],
       child: MaterialApp.router(
-        title: '${customerData.displayName} - Business Card',
+        title: 'Digital Business Card',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.indigo,
