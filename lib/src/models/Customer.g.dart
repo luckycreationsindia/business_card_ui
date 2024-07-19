@@ -85,7 +85,7 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
 class _CustomerRestClient implements CustomerRestClient {
   _CustomerRestClient(
@@ -99,10 +99,10 @@ class _CustomerRestClient implements CustomerRestClient {
 
   @override
   Future<Customer> loadCustomer(String id) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result =
         await _dio.fetch<Map<String, dynamic>>(_setStreamType<Customer>(Options(
       method: 'GET',
@@ -120,8 +120,8 @@ class _CustomerRestClient implements CustomerRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = Customer.fromJson(_result.data!);
-    return value;
+    final _value = Customer.fromJson(_result.data!);
+    return _value;
   }
 
   @override
@@ -129,7 +129,7 @@ class _CustomerRestClient implements CustomerRestClient {
     Map<String, dynamic> body, {
     String contentType = 'application/json',
   }) async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Content-Type': contentType};
     _headers.removeWhere((k, v) => v == null);
@@ -153,10 +153,10 @@ class _CustomerRestClient implements CustomerRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
+    var _value = _result.data!
         .map((dynamic i) => Customer.fromJson(i as Map<String, dynamic>))
         .toList();
-    return value;
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

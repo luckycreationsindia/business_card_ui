@@ -6,7 +6,7 @@ part of 'misc.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element
 
 class _MiscRestClient implements MiscRestClient {
   _MiscRestClient(
@@ -20,10 +20,10 @@ class _MiscRestClient implements MiscRestClient {
 
   @override
   Future<List<String>> getSectors() async {
-    const _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
+    const Map<String, dynamic>? _data = null;
     final _result =
         await _dio.fetch<List<dynamic>>(_setStreamType<List<String>>(Options(
       method: 'GET',
@@ -41,8 +41,8 @@ class _MiscRestClient implements MiscRestClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = _result.data!.cast<String>();
-    return value;
+    final _value = _result.data!.cast<String>();
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
